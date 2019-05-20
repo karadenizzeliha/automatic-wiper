@@ -1,0 +1,23 @@
+//bu kod yaðmur sensörünün doðru çalýþtýðýný test etmek için yazýlmýþtýr.
+
+int rain=0;
+ 
+void setup() {   
+Serial.begin(9600); //seri haberleþmenin saðlanmasý için
+ 
+}
+ 
+void loop() {
+rain=analogRead(A0); //A0 pininden analog verilerin okunup raine eþitlenmesi için
+rain=map(rain,0,1024,0,3); // sensörden okunan deðer, min deðer , max deðer , yaðmur miktarý için derecelendirme yapmak amacýyla 0 ve 3 deðerleri
+if(rain==2){ // okunan deðer ikiye eþitse
+Serial.println("Yagmur yok"); //serial monitöre yaðmur yok yazdýr
+}
+if(rain==1){ // okunan deðer bire eþitse
+Serial.println("Yagmur yagiyor."); //serial monitöre yaðmur yaðýyor yazdýr
+}
+if(rain==0){ //okunan deðer0 a eþitse
+Serial.println("Saganak yagmur yagiyor.");//serial monitöre saganak yagmur yagýyor yazdýr.
+}
+delay(250);//250 msde bi deðer alýnýp deðerlendirmesi için
+}
