@@ -1,0 +1,42 @@
+#include <Servo.h>// Servo için kütüphane ekliyoruz 
+
+Servo servo; // Servomuza isim veriyoruz
+
+int aci = 0;  //aci degerimizin ilk degeri 0
+int sensorValue = 0;// sensörden alinacak ilk veriyi 0 a esitliyoruz
+
+void setup() {
+  Serial.begin(9600);// Seri port da haberlesmeyi saglamak için 
+  
+  servo.attach(9);// Servo için 9. girisi tanimliyoruz
+  
+  delay(3000); 
+ 
+}
+
+void wipe(int Speed)// sensörden alinan veri yogunluga göre motorun çalismasi için fonksiyon olusturuyoruz.
+{
+
+  if(Speed>400){Speed=5000;} // sensörden alinan yogunluklari üç satirda siniflandiriyoruz
+  if(Speed>350&&Speed<=400){Speed=3000;}
+  if(Speed<=350){Speed=500;}
+  for (aci = 85; aci >= 0; aci--) {//aci degeri 85 e esitse ve 0 dan büyükse aci degerini düsür
+    servo.write(aci);      //      Servoya açi degiskenini aktariyoruz 
+    delay(3);                    
+  }
+  for (aci = 0; aci <= 85; aci++) { //aci degeri o e esitse ve 85 ten küçükse aci degerini arttir
+    servo.write(aci); // Servoya açi degiskenini aktariyoruz            
+    delay(3);                       
+  }
+  delay(Speed);// bu fonksiyonu sensörden alinan deger boyunca çalismasini saglamak için
+}
+
+
+void loop() 
+{
+
+sensorValue = analogRead(A0); //sensörden anolog veri okunmasi için
+Serial.println(sensorValue); // seri port ekranina sensörden alinan yogunlugun yazilmasi için
+if(sensorValue>600){servo.write(85);delay(1000);}//sensörden yagmur bilgisi alinmadignda motor çalismasin
+if(sensorValue<=600){wipe(sensorValue);}//sensörden yagmur bilgisi alindignda wipe fonksiyonu çalissin
+}
