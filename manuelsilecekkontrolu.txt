@@ -11,7 +11,7 @@ int aci = 0; // aci degiskenini baslangiç olarak 0 ayarliyoruz
 
 void setup() { 
   Serial.begin(9600); // Seri port da haberlesmeyi saglamak için 
-  servo.attach(9); // Servo için 5. girisi tanimliyoruz
+  servo.attach(9); // Servo için 9. girisi tanimliyoruz
   servo.write(0); // servoyu 0 dereceye getiriyoruz
   pinMode (sag_pin2, INPUT_PULLUP); //Butonlari giris olarak tanimliyoruz
   pinMode (sol_pin3, INPUT_PULLUP); //Butonlari giris olarak tanimliyoruz
