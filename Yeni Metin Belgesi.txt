@@ -1,0 +1,48 @@
+//bu kod sileceklerin sürücü tarafindan manuel olarak kontrol edilmesini için yazilmis kodlardir.
+#include <Servo.h> // Servo için kütüphane ekliyoruz 
+
+Servo servo; // Servomuza isim veriyoruz
+
+const int sag_pin2 = 2; // Sag Buton pinimizi 2 olarak belirtiyoruz
+const int sol_pin3 = 3; // sol Buton pinimizi 3 olarak belirtiyoruz
+int sag_durum = 1;//butonun ilk durumunu yaziyoruz
+int sol_durum = 1;//butonun ilk durumunu yaziyoruz
+int aci = 0; // aci degiskenini baslangiç olarak 0 ayarliyoruz
+
+void setup() { 
+  Serial.begin(9600); // Seri port da haberlesmeyi saglamak için 
+  servo.attach(9); // Servo için 5. girisi tanimliyoruz
+  servo.write(0); // servoyu 0 dereceye getiriyoruz
+  pinMode (sag_pin2, INPUT_PULLUP); //Butonlari giris olarak tanimliyoruz
+  pinMode (sol_pin3, INPUT_PULLUP); //Butonlari giris olarak tanimliyoruz
+ 
+}
+
+void loop() {
+  sag_durum = digitalRead(sag_pin2); // Butonlarin durumlarini okuyoruz 
+  sol_durum = digitalRead(sol_pin3); // Butonlarin durumlarini okuyoruz
+    if (sag_durum == LOW)// sag butona basildiginda
+    {
+    aci=aci+5; // Butona basildiginda yukarida tanimladigimiz açi degiskenine +5 ekliyoruz
+    delay(50);
+    Serial.print(aci); // Serial port ekranina açi degiskenini yazdiriyoruz
+    servo.write(aci); // Servoya açi degiskenini aktariyoruz 
+    
+    
+    if (aci==85)// aciyi 85 derece ile sinirlandiriyoruz
+     aci=80;
+  
+      }
+
+   if (sol_durum == LOW) //sol butona basildiginda
+   {
+    aci=aci-5;//Butona basildiginda  açi degiskenine -5 ekliyoruz
+    delay(50);
+    Serial.print(aci); // Serial port ekranina açi degiskenini yazdiriyoruz
+        servo.write(aci); // Servoya açi degiskenini aktariyoruz
+    
+    if (aci==0)//aciyi 0 derece ile sinirliyoruz
+     aci=5;
+
+   }}
+  
